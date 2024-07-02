@@ -7,6 +7,7 @@ import {RootStackParamList} from '../../navigation/interfaces';
 import {useFetchPackages} from './hooks/useFetchPackages';
 import {routes} from '../../navigation/constants';
 
+//test
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
 const HomeScreen: React.FC = () => {
