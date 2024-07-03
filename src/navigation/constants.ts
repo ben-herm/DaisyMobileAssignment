@@ -1,5 +1,4 @@
-// src/navigation/constants.ts
 export const routes = {
-  Home: 'Home',
+  UsersList: 'UsersList',
   Details: 'Details',
 } as const;

@@ -7,5 +7,6 @@ export const sendNotifications = async (
   const response = await api.post('/qru1b8pse4hcr12ojiyala2wigym8h4y', {
     notify: notifications,
   });
+
   return response.data;
 };

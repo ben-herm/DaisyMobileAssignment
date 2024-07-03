@@ -1,7 +1,8 @@
-// src/hooks/useFetchPackages.ts
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useMemo} from 'react';
 import {Package} from '../../../common/interfaces';
 import {fetchPackages} from '../../../services/api/PackagesApi';
+import {extractUniqueUsersFromPackages} from '../helpers';
+import messages from '../constants';
 
 export const useFetchPackages = () => {
   const [packages, setPackages] = useState<Package[]>([]);
@@ -14,7 +15,7 @@ export const useFetchPackages = () => {
         const packagesData = await fetchPackages();
         setPackages(packagesData);
       } catch (err) {
-        setError('Failed to fetch packages');
+        setError(messages.errors.fetchPackages);
       } finally {
         setLoading(false);
       }
@@ -22,5 +23,9 @@ export const useFetchPackages = () => {
     getPackages();
   }, []);
 
-  return {packages, loading, error};
+  const usersAndPackageList = useMemo(() => {
+    return extractUniqueUsersFromPackages(packages);
+  }, [packages]);
+
+  return {...usersAndPackageList, loading, error};
 };
