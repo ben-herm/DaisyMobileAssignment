@@ -1,0 +1,24 @@
+{
+    "userDetails": {
+      "userDetails": "User Details",
+      "packages": "Packages",
+      "email": "Email",
+      "packageSize": "Package Size:",
+      "carrier": "Carrier:",
+      "notifyUser" : "Notify User",
+      "remove": "Remove",
+      "edit": "Edit"
+    },
+    "usersList": {
+      "usersList": "Users List",
+      "retry": "Retry",
+      "notifyAllUsers": "Notify All Users",
+      "notifying": "Notifying",
+      "error": "Unable to fetch packages. Please try again later."
+
+    },
+    "notifications": {
+      "usersNotifiesSuccesssfuly": "{{recipient}} Notified Successfully"
+    }
+}
+  

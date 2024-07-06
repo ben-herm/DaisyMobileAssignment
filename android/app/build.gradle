@@ -1,9 +1,10 @@
 apply plugin: "com.android.application"
+apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
 
 import com.android.build.OutputFile
 import org.apache.tools.ant.taskdefs.condition.Os
 project.ext.react = [
-    enableHermes: true  // clean and rebuild if changing
+    enableHermes: false  // clean and rebuild if changing
 ]
 /**
  * The react.gradle file registers a task for each build variant (e.g. bundleDebugJsAndAssets
@@ -257,12 +258,10 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation project(':react-native-reanimated')
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
-
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.fbjni'
     }

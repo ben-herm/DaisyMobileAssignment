@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -6,23 +6,25 @@ import {
   Modal,
   TouchableOpacity,
 } from 'react-native';
-import {Card, Text, ActivityIndicator} from 'react-native-paper';
-import {RouteProp, useRoute} from '@react-navigation/native';
-import {Notification, Package} from '../../common/interfaces';
-import {sendNotifications} from '../../services/api/NotificationsApi';
+import { Card, Text, ActivityIndicator } from 'react-native-paper';
+import { RouteProp, useRoute } from '@react-navigation/native';
+import { Notification, Package } from '../../common/interfaces';
+import { sendNotifications } from '../../services/api/NotificationsApi';
 import theme from '../../common/styles/theme';
+import AnimatedCard from './components/AnimatedDetailsCard';
 
 type DetailScreenRouteProp = RouteProp<
-  {Detail: {email: string; packages: Package[]}},
+  { Detail: { email: string; packages: Package[] } },
   'Detail'
 >;
 
 const UserDetails: React.FC = () => {
   const route = useRoute<DetailScreenRouteProp>();
-  const {email, packages: userPackages} = route.params;
+  const { email, packages: userPackages } = route.params;
 
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [expandedPackage, setExpandedPackage] = useState<string | null>(null);
 
   const notifyUser = async () => {
     setLoading(true);
@@ -35,6 +37,11 @@ const UserDetails: React.FC = () => {
     setModalVisible(true);
   };
 
+  const toggleExpand = (id: string) => {
+    console.log(`Toggling expand for package: ${id}`);
+    setExpandedPackage(prev => (prev === id ? null : id));
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Card style={styles.card}>
@@ -44,18 +51,18 @@ const UserDetails: React.FC = () => {
         </Card.Content>
       </Card>
       {userPackages.map(pkg => (
-        <Card key={pkg.id} style={styles.packageCard}>
-          <Card.Content>
-            <Text
-              style={styles.packageText}>{`Package Size: ${pkg.type}`}</Text>
-            <Text style={styles.packageText}>{`Carrier: ${pkg.carrier}`}</Text>
-          </Card.Content>
-        </Card>
+        <AnimatedCard
+          key={pkg.id}
+          pkg={pkg}
+          expanded={expandedPackage === pkg.id}
+          onToggleExpand={() => toggleExpand(pkg.id)}
+        />
       ))}
       <TouchableOpacity
         onPress={notifyUser}
         style={styles.button}
-        disabled={loading}>
+        disabled={loading}
+      >
         {loading ? (
           <ActivityIndicator animating={true} color={theme.colors.surface} />
         ) : (
@@ -66,7 +73,8 @@ const UserDetails: React.FC = () => {
         transparent={true}
         visible={modalVisible}
         animationType="slide"
-        onRequestClose={() => setModalVisible(false)}>
+        onRequestClose={() => setModalVisible(false)}
+      >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.modalText}>User notified successfully!</Text>
@@ -93,31 +101,20 @@ const styles = StyleSheet.create({
     fontSize: theme.typography.fontSizes.large,
     color: theme.colors.text,
   },
-  packageCard: {
-    marginVertical: 4,
-    backgroundColor: theme.colors.surface,
-    padding: 8,
-    borderRadius: 8,
-  },
-  packageText: {
-    fontSize: theme.typography.fontSizes.medium,
-    alignSelf: 'center',
-    color: theme.colors.text,
-  },
   button: {
     marginTop: 16,
     backgroundColor: theme.colors.primary,
     borderRadius: 16,
     padding: 8,
-    textAlign:'center',
-    justifyContent:'center',
-    alignContent:'center'
+    textAlign: 'center',
+    justifyContent: 'center',
+    alignContent: 'center',
   },
   buttonLabel: {
     fontSize: theme.typography.fontSizes.medium,
     fontWeight: '800',
-    alignSelf:'center',
-    color:theme.colors.surface
+    alignSelf: 'center',
+    color: theme.colors.surface,
   },
   modalContainer: {
     flex: 1,

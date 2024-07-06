@@ -1,8 +1,8 @@
-// src/services/index.ts
 import axios from 'axios';
+import {apiConfig} from './config';
 
 const api = axios.create({
-  baseURL: 'https://hook.integromat.com',
+  baseURL: apiConfig.baseUrl,
   timeout: 10000,
 });
 
