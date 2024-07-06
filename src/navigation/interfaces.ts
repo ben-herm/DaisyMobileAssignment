@@ -1,6 +1,6 @@
-import {Package} from '../common/interfaces';
+import {Package, User} from '../common/interfaces';
 
 export type RootStackParamList = {
   UsersList: undefined;
-  Details: {email: string; packages: Package[]};
+  Details: {user: User; packages: Package[]};
 };

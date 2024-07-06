@@ -13,4 +13,18 @@ export interface Notification {
 export interface User {
   email: string;
   name: string;
+  packages: Package[]
 }
+
+export type NotificationModalProps = {
+  content: string;
+  visible: boolean;
+  onClose: () => void;
+};
+
+export type PrimaryButtonProps = {
+  onPress: () => void;
+  loading: boolean;
+  disabled: boolean;
+  text: string;
+};
