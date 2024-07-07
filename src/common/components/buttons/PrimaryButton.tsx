@@ -1,6 +1,6 @@
 import React from 'react';
 import {TouchableOpacity, Text, StyleSheet, View} from 'react-native';
-import {PrimaryButtonProps} from '../../interfaces';
+import {PrimaryButtonProps} from '../../data/interfaces';
 import theme from '../../styles/theme';
 import {ActivityIndicator} from 'react-native-paper';
 

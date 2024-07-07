@@ -6,7 +6,7 @@ import {
 } from '@react-navigation/stack';
 import {RootStackParamList} from './interfaces';
 import {routes} from './constants';
-import UsersList from '../screens/usersList/UsersList';
+import Users from '../screens/usersList/Users';
 import UserDetails from '../screens/userDetails/UserDetails';
 import MainHeader from '../common/components/headers/MainHeader';
 import {getHeaderTitle} from './helpers';
@@ -17,7 +17,7 @@ const AppNavigator: React.FC = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={routes.UsersList}
+        initialRouteName={routes.Users}
         screenOptions={({route, navigation}) => ({
           header: () => (
             <MainHeader
@@ -29,7 +29,7 @@ const AppNavigator: React.FC = () => {
           gestureDirection: 'horizontal',
           cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         })}>
-        <Stack.Screen name={routes.UsersList} component={UsersList} />
+        <Stack.Screen name={routes.Users} component={Users} />
         <Stack.Screen name={routes.Details} component={UserDetails} />
       </Stack.Navigator>
     </NavigationContainer>

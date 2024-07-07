@@ -2,8 +2,8 @@ import React, {useRef, useEffect} from 'react';
 import {StyleSheet, TouchableOpacity, Animated, Modal} from 'react-native';
 import {Text} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {NotificationModalProps} from '../interfaces';
-import theme from '../styles/theme';
+import {NotificationModalProps} from '../../data/interfaces';
+import theme from '../../styles/theme';
 
 const NotificationModal: React.FC<NotificationModalProps> = ({
   visible,
@@ -46,7 +46,7 @@ const NotificationModal: React.FC<NotificationModalProps> = ({
           <Icon
             name="check-circle"
             size={64}
-            color={theme.colors.darkBlue}
+            color={theme.colors.scrim}
           />
           <Text style={styles.modalText}>{content}</Text>
           <TouchableOpacity onPress={onClose} style={styles.closeButton}>
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   closeButton: {
-    backgroundColor: theme.colors.primary,
+    backgroundColor: theme.colors.darkBlue,
     borderRadius: 16,
     paddingVertical: 8,
     paddingHorizontal: 16,

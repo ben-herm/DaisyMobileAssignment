@@ -1,4 +1,4 @@
 export const routes = {
-  UsersList: 'UsersList',
+  Users: 'Users',
   Details: 'Details',
 } as const;

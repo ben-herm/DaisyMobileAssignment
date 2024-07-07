@@ -2,10 +2,12 @@ import React from 'react';
 import {View, ActivityIndicator, StyleSheet} from 'react-native';
 import theme from '../../styles/theme';
 
-const LoadingIndicator: React.FC = () => {
+const LoadingIndicator: React.FC<{size: 'small' | 'large' | undefined}> = ({
+  size,
+}) => {
   return (
     <View style={styles.loader}>
-      <ActivityIndicator size="large" color={theme.colors.black} />
+      <ActivityIndicator size={size} color={theme.colors.black} />
     </View>
   );
 };

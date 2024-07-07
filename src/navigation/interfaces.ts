@@ -1,6 +1,6 @@
 import {Package, User} from '../common/data/interfaces';
 
 export type RootStackParamList = {
-  UsersList: undefined;
+  Users: undefined;
   Details: {user: User; packages: Package[]};
 };

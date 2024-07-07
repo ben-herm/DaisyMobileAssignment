@@ -6,8 +6,8 @@ export const getHeaderTitle = (routeName: string | undefined) => {
   switch (routeName) {
     case routes.Details:
       return t('userDetails.userDetails');
-    case routes.UsersList:
-      return t('usersList.usersList');
+    case routes.Users:
+      return t('users.usersList');
     default:
       return '';
   }
