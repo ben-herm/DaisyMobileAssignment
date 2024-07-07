@@ -1,90 +1,71 @@
-import React, { useState } from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  View,
-  Modal,
-  TouchableOpacity,
-} from 'react-native';
-import { Card, Text, ActivityIndicator } from 'react-native-paper';
-import { RouteProp, useRoute } from '@react-navigation/native';
-import { Notification, Package } from '../../common/interfaces';
-import { sendNotifications } from '../../services/api/NotificationsApi';
+import React, {useState} from 'react';
+import {StyleSheet, View} from 'react-native';
+import {Card, Text} from 'react-native-paper';
+import {useRoute} from '@react-navigation/native';
 import theme from '../../common/styles/theme';
-import AnimatedCard from './components/AnimatedDetailsCard';
-
-type DetailScreenRouteProp = RouteProp<
-  { Detail: { email: string; packages: Package[] } },
-  'Detail'
->;
+import {useTranslation} from 'react-i18next';
+import {DetailScreenRouteProp} from './interfaces';
+import useNotifyUser from './hooks/useNotifyUser';
+import NotificationModal from '../../common/components/modals/NotificationsSuccessModal';
+import PrimaryButton from '../../common/components/buttons/PrimaryButton';
+import {NotificationType} from '../../services/notifications/constants';
+import AnimatedPackageCard from './components/PackageDetails/AnimatedPackageCard';
 
 const UserDetails: React.FC = () => {
+  const {t} = useTranslation();
   const route = useRoute<DetailScreenRouteProp>();
-  const { email, packages: userPackages } = route.params;
-
-  const [loading, setLoading] = useState(false);
+  const {loading, error, notifyUser, notifySingleUser, resetError} =
+    useNotifyUser();
+    
   const [modalVisible, setModalVisible] = useState(false);
-  const [expandedPackage, setExpandedPackage] = useState<string | null>(null);
 
-  const notifyUser = async () => {
-    setLoading(true);
-    const notifications: Notification[] = userPackages.map(pkg => ({
-      email: pkg.recipient.email,
-      content: `You have a ${pkg.type} package from ${pkg.carrier} waiting for you.`,
-    }));
-    await sendNotifications(notifications);
-    setLoading(false);
-    setModalVisible(true);
-  };
+  const {user, packages: userPackages} = route.params;
 
-  const toggleExpand = (id: string) => {
-    console.log(`Toggling expand for package: ${id}`);
-    setExpandedPackage(prev => (prev === id ? null : id));
+  const notifyUserAllPackages = async () => {
+    await notifyUser(
+      userPackages,
+      user.email,
+      NotificationType.MULTIPLE_PACKAGES,
+    );
+    if (!error) setModalVisible(true);
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <View style={styles.container}>
       <Card style={styles.card}>
-        <Card.Title title="User Details" />
         <Card.Content>
-          <Text style={styles.email}>{email}</Text>
+          <Text style={styles.name}>{user.name}</Text>
+          <Text style={styles.email}>{user.email}</Text>
         </Card.Content>
       </Card>
+      <Text style={styles.header}>{t('userDetails.packages')}</Text>
       {userPackages.map(pkg => (
-        <AnimatedCard
+        <AnimatedPackageCard
           key={pkg.id}
           pkg={pkg}
-          expanded={expandedPackage === pkg.id}
-          onToggleExpand={() => toggleExpand(pkg.id)}
+          notifySingleUser={notifySingleUser}
+          email={user.email}
         />
       ))}
-      <TouchableOpacity
-        onPress={notifyUser}
-        style={styles.button}
+      {error && (
+        <Text style={styles.errorText} onPress={resetError}>
+          {error}
+        </Text>
+      )}
+      <PrimaryButton
+        onPress={notifyUserAllPackages}
+        loading={loading}
         disabled={loading}
-      >
-        {loading ? (
-          <ActivityIndicator animating={true} color={theme.colors.surface} />
-        ) : (
-          <Text style={styles.buttonLabel}>Notify User</Text>
-        )}
-      </TouchableOpacity>
-      <Modal
-        transparent={true}
+        text={t('userDetails.notifyUser')}
+      />
+      <NotificationModal
+        content={t('notifications.usersNotifiesSuccesssfuly', {
+          recipient: 'User',
+        })}
         visible={modalVisible}
-        animationType="slide"
-        onRequestClose={() => setModalVisible(false)}
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalText}>User notified successfully!</Text>
-            <TouchableOpacity onPress={() => setModalVisible(false)}>
-              <Text>Ok</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
-    </ScrollView>
+        onClose={() => setModalVisible(false)}
+      />
+    </View>
   );
 };
 
@@ -92,14 +73,27 @@ const styles = StyleSheet.create({
   container: {
     padding: 16,
     backgroundColor: theme.colors.background,
+    flex: 1,
   },
   card: {
     marginBottom: 16,
-    backgroundColor: theme.colors.surface,
+    backgroundColor: theme.colors.white,
   },
   email: {
-    fontSize: theme.typography.fontSizes.large,
+    fontSize: theme.typography.fontSizes.medium,
     color: theme.colors.text,
+  },
+  name: {
+    fontSize: theme.typography.fontSizes.large,
+    marginBottom: 10,
+    color: theme.colors.text,
+  },
+  header: {
+    fontSize: theme.typography.fontSizes.large,
+    alignSelf: 'center',
+    fontWeight: '700',
+    color: theme.colors.text,
+    marginBottom: 10,
   },
   button: {
     marginTop: 16,
@@ -108,31 +102,17 @@ const styles = StyleSheet.create({
     padding: 8,
     textAlign: 'center',
     justifyContent: 'center',
-    alignContent: 'center',
+    alignItems: 'center',
   },
   buttonLabel: {
     fontSize: theme.typography.fontSizes.medium,
     fontWeight: '800',
-    alignSelf: 'center',
-    color: theme.colors.surface,
+    color: theme.colors.white,
   },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)',
-  },
-  modalContent: {
-    width: 300,
-    padding: 20,
-    backgroundColor: theme.colors.surface,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  modalText: {
-    fontSize: theme.typography.fontSizes.medium,
-    marginBottom: 20,
-    color: theme.colors.text,
+  errorText: {
+    color: theme.colors.error,
+    marginTop: 10,
+    textAlign: 'center',
   },
 });
 
