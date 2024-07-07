@@ -1,24 +1,27 @@
 import {Notification, Package} from '../../common/data/interfaces';
+import {NotificationType} from './constants';
+import {createNotification} from './notificationfactory';
 
-export const createNotification = (
+export const createPackageNotification = (pkg: Package): Notification => {
+  return createNotification(NotificationType.SINGLE_PACKAGE, pkg);
+};
+
+export const createMultiplePackagesNotification = (
   userPackages: Package[],
   email: string,
 ): Notification => {
-  const notification = {
+  return createNotification(
+    NotificationType.MULTIPLE_PACKAGES,
+    userPackages,
     email,
-    content: `You have ${userPackages.length} package${userPackages.length > 1 ? 's' : ''} waiting for you.`,
-  };
-
-  return notification;
+  );
 };
 
 export const createNotifications = (userPackagesByEmail: {
   [email: string]: Package[];
 }): Notification[] => {
-  const notifications = Object.keys(userPackagesByEmail).map(email => {
+  return Object.keys(userPackagesByEmail).map(email => {
     const userPackages = userPackagesByEmail[email];
-    return createNotification(userPackages, email);
+    return createMultiplePackagesNotification(userPackages, email);
   });
-
-  return notifications;
 };

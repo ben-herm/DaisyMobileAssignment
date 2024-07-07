@@ -5,11 +5,12 @@
       "email": "Email",
       "packageSize": "Package Size:",
       "carrier": "Carrier:",
-      "notifyUser" : "Notify User",
+      "notifyUser" : "Notify All",
+      "notify" : "Notify",
       "remove": "Remove",
       "edit": "Edit"
     },
-    "usersList": {
+    "users": {
       "usersList": "Users List",
       "retry": "Retry",
       "notifyAllUsers": "Notify All Users",
