@@ -1,5 +1,5 @@
 import {useState, useEffect, useMemo} from 'react';
-import {Package} from '../../../common/interfaces';
+import {Package} from '../../../common/data/interfaces';
 import {fetchPackages} from '../../../services/api/PackagesApi';
 import {extractUniqueUsersAndPackages} from '../helpers';
 import {useTranslation} from 'react-i18next';

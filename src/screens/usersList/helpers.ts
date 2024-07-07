@@ -1,6 +1,6 @@
-import {Package, User} from '../../common/interfaces';
+import {Package, User} from '../../common/data/interfaces';
 
-export const extractUniqueUsersFromPackages = (
+export const extractUniqueUsersAndPackages = (
   packages: Package[],
 ): {users: User[]; userPackages: Record<string, Package[]>} => {
   const userPackages: Record<string, Package[]> = {};

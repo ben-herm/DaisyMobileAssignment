@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {Package} from '../../../common/interfaces';
+import {Package} from '../../../common/data/interfaces';
 import {createNotifications} from '../../../services/notifications/notificationsService';
 import {sendNotifications} from '../../../services/api/NotificationsApi';
 
