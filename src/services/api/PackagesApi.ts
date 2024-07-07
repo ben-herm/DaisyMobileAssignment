@@ -1,4 +1,4 @@
-import {Package} from '../../common/interfaces';
+import {Package} from '../../common/data/interfaces';
 import {apiConfig} from './config';
 import api from './index';
 

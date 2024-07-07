@@ -1,4 +1,4 @@
-import {Notification, Package} from '../../common/interfaces';
+import {Notification, Package} from '../../common/data/interfaces';
 
 export const createNotification = (
   userPackages: Package[],
