@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Card, Text} from 'react-native-paper';
+import {Text} from 'react-native-paper';
 import {useRoute} from '@react-navigation/native';
 import theme from '../../common/styles/theme';
 import {useTranslation} from 'react-i18next';
@@ -10,13 +10,14 @@ import NotificationModal from '../../common/components/modals/NotificationsSucce
 import PrimaryButton from '../../common/components/buttons/PrimaryButton';
 import {NotificationType} from '../../services/notifications/constants';
 import AnimatedPackageCard from './components/PackageDetails/AnimatedPackageCard';
+import UserDetailsCard from './components/PackageDetails/UserDetailsCard';
 
 const UserDetails: React.FC = () => {
   const {t} = useTranslation();
   const route = useRoute<DetailScreenRouteProp>();
   const {loading, error, notifyUser, notifySingleUser, resetError} =
     useNotifyUser();
-    
+
   const [modalVisible, setModalVisible] = useState(false);
 
   const {user, packages: userPackages} = route.params;
@@ -32,12 +33,7 @@ const UserDetails: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Card style={styles.card}>
-        <Card.Content>
-          <Text style={styles.name}>{user.name}</Text>
-          <Text style={styles.email}>{user.email}</Text>
-        </Card.Content>
-      </Card>
+      <UserDetailsCard user={user} />
       <Text style={styles.header}>{t('userDetails.packages')}</Text>
       {userPackages.map(pkg => (
         <AnimatedPackageCard
@@ -74,19 +70,6 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: theme.colors.background,
     flex: 1,
-  },
-  card: {
-    marginBottom: 16,
-    backgroundColor: theme.colors.white,
-  },
-  email: {
-    fontSize: theme.typography.fontSizes.medium,
-    color: theme.colors.text,
-  },
-  name: {
-    fontSize: theme.typography.fontSizes.large,
-    marginBottom: 10,
-    color: theme.colors.text,
   },
   header: {
     fontSize: theme.typography.fontSizes.large,

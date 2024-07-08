@@ -1,18 +1,18 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, FlatList, Text} from 'react-native';
+import {View, StyleSheet, Text} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useFetchPackages} from './hooks/useFetchPackages';
 import {routes} from '../../navigation/constants';
 import theme from '../../common/styles/theme';
-import UserCard from './components/UserCard';
 import LoadingIndicator from '../../common/components/indicators/LoadingIndicator';
 import {useNotifyUsers} from './hooks/useNotifyUsers';
-import UserListErrorMessege from './components/ErrorMessege';
 import NotificationModal from '../../common/components/modals/NotificationsSuccessModal';
 import {useTranslation} from 'react-i18next';
 import PrimaryButton from '../../common/components/buttons/PrimaryButton';
 import {User} from '../../common/data/interfaces';
 import {UsersNavigationProp} from './interfaces';
+import UserList from './components/UsersList';
+import UserListErrorMessege from './components/ErrorMessege';
 
 const Users: React.FC = () => {
   const {t} = useTranslation();
@@ -46,17 +46,10 @@ const Users: React.FC = () => {
   return (
     <View
       style={[styles.container, {backgroundColor: theme.colors.background}]}>
-      <FlatList
-        data={users}
-        keyExtractor={item => item.email}
-        renderItem={({item}) => (
-          <UserCard
-            name={item.name}
-            email={item.email}
-            packageCount={userPackages[item.email].length}
-            onPress={() => onUserCardPress(item)}
-          />
-        )}
+      <UserList
+        users={users}
+        userPackages={userPackages}
+        onUserCardPress={onUserCardPress}
       />
       {notifyError && <Text style={styles.errorText}>{notifyError}</Text>}
       <PrimaryButton

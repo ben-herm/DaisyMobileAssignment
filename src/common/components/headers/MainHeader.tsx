@@ -25,10 +25,7 @@ const MainHeader: React.FC<MainHeaderProps> = ({title, showBackButton}) => {
             />
           </TouchableOpacity>
         )}
-        <Text
-          style={[styles.headerTitle, {marginLeft: showBackButton ? 40 : 0}]}>
-          {title}
-        </Text>
+        <Text style={styles.headerTitle}>{title}</Text>
         <TouchableOpacity>
           <Icon
             name="dots-three-vertical"
